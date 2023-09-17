@@ -23,6 +23,8 @@ public class App {
                 case 3:
                     System.exit(0);
                     break;
+                default:
+                    System.err.println("Lua chon chua hop ly, vui long chon lai!");
             }
         }
     }
@@ -30,7 +32,6 @@ public class App {
     public static void login() {
         System.out.println("======= *** LOGIN *** ======");
         while (true){
-            boolean flag = true;
             System.out.println("UserName : ");
             String userName = InputMethods.getString();
             System.out.println("Password : ");
@@ -41,20 +42,34 @@ public class App {
                     System.out.println("Ban co muon Logout khong ? y/n ");
                     char check = InputMethods.getString().charAt(0);
                     if(check == 'y'){
-                        flag = false;
+                        break;
+                    }
+                }
+            } else {
+                System.err.println("Username hoac Password chua dung");
+                while (true) {
+                    boolean checkout = true;
+                    System.out.println("1.Tiep tuc dang nhap\n" +
+                            "2.Dang ky mot tai khoan moi"
+                            +"Nhap lua chon cua ban : ");
+                    int flag = InputMethods.getInteger();
+                    switch (flag) {
+                        case 1:
+                            break;
+                        case 2:
+                            register();
+                            checkout = false;
+                            break;
+                        default:
+                            System.out.println("Lua chon chua hop ly, vui long nhap lai!");
+                    }
+                    if(!checkout) {
                         break;
                     }
                 }
 
-            } else {
-                System.out.println("Username hoac Password chua dung, vui long nhap lai!");
             }
-            if(flag) {
-                continue;
-            } else {
-                break;
-            }
-
+            break;
         }
 
     }
@@ -65,7 +80,7 @@ public class App {
             System.out.println("UserName : ");
             String userName = InputMethods.getString();
             if(accountService.checkExist(userName)){
-                System.out.println("UserName da ton tai vui long nhap UserName khac");
+                System.err.println("UserName da ton tai vui long nhap UserName khac");
             } else {
                 account.setUserName(userName);
                 break;
@@ -78,14 +93,14 @@ public class App {
                 account.setEmail(email);
                 break;
             } else {
-                System.out.println("Email chua hop le, vui long nhap lai");
+                System.err.println("Email chua hop le, vui long nhap lai");
             }
         }
         while (true) {
             System.out.println("Password : ");
             String password = InputMethods.getString();
             if(password.length() < 6){
-                System.out.println("Password can it nhat 6 ky tu!");
+                System.err.println("Password can it nhat 6 ky tu!");
 
             } else {
                 account.setPassword(password);
@@ -98,7 +113,7 @@ public class App {
             if(confirmPassword.equals(account.getPassword())){
                 break;
             } else {
-                System.out.println("Password Confirm chua chinh xac, vui long nhap lai!");
+                System.err.println("Password Confirm chua chinh xac, vui long nhap lai!");
             }
         }
         if(accountService.addUser(account)) {
